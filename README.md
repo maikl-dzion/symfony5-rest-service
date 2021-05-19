@@ -5,7 +5,7 @@
 REST API Doc
 ######
 
-/home
+/public  корневая папка
 
 ### 
 
@@ -33,14 +33,14 @@ GET /order/one/{id}  получить 1 покупку по id
 ######
 
 ### User
-/user/list/all получить всех пользователей
+GET /user/list/all получить всех пользователей
 ######
-/user/list/clients  получить всех клиентов
+GET /user/list/clients  получить всех клиентов
 ######
-/user/list/managers получить всех менеджеров
+GET /user/list/managers получить всех менеджеров
 ######
-/user/create  создать нового пользователя
+POST /user/create  создать нового пользователя
 ######
-/user/one/{id}  получить пользователя по id
+GET /user/one/{id}  получить пользователя по id
 ######
 
