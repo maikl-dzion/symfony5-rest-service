@@ -23,11 +23,11 @@ GET /car/one/{id}  получить 1 авто по id
 ######
 
 ### Order
-GET /order/list/all получить все продажи(заказы)
+GET /order/list/all получить все покупки(заказы)
 ######
 POST /order/create создать новую покупку
 ######
-GET /order/list/by_user получить все покупки клиента
+GET /order/list/by_client получить все покупки клиента
 ######
 GET /order/one/{id}  получить 1 покупку по id
 ######
@@ -43,4 +43,9 @@ POST /user/create  создать нового пользователя
 ######
 GET /user/one/{id}  получить пользователя по id
 ######
+POST /user/jwt/auth   JWT авторизация пользователя
+######
+  email, password
+######
+
 

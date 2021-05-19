@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class OrderController extends AbstractController
+class OrderController extends BaseController
 {
 
     /**
@@ -16,12 +16,13 @@ class OrderController extends AbstractController
      */
     public function index(): Response
     {
+
+
         $repo = $this->getDoctrine()->getRepository(Order::class);
         $list = $repo->findAll();
         $results   = $this->formatToArray($list);
         return $this->json(['orders' => $results]);
     }
-
 
     /**
      * @Route("/order/create", name="order_create")
@@ -50,13 +51,12 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/list/by_user", name="order_by_user")
+     * @Route("/order/list/by_client/{client_id}", name="order_by_client")
      */
-    public function getOrderByUser(): Response
+    public function getOrderByClient($client_id): Response
     {
         $repo = $this->getDoctrine()->getRepository(Order::class);
-        $list = $repo->findAll();
-        $results   = $this->formatToArray($list);
+        $results = $repo->findByClientId($client_id);
         return $this->json(['orders' => $results]);
     }
 
@@ -82,7 +82,7 @@ class OrderController extends AbstractController
             $data[] = [
                 'id'    => $item->getId(),
                 'create_dt'   => $item->getCreateDt(),
-                'client_id' => $item->getClentId(),
+                'client_id' => $item->getClientId(),
                 'manager_id' => $item->getManagerId(),
                 'car_id'  => $item->getCarId(),
                 'car_showroom_id'  => $item->getCarShowroomId(),

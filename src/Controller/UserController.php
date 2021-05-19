@@ -5,11 +5,12 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Firebase\JWT\JWT;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\UserRepository;
 use App\Entity\User;
 
-class UserController extends AbstractController
+class UserController extends BaseController
 {
     /**
      * @Route("/user/list/all", name="user_all")
@@ -47,7 +48,7 @@ class UserController extends AbstractController
     {
 
         $r = $request->query;
-        $password   = password_hash($r->get('password'), PASSWORD_DEFAULT);
+        $password   = password_hash(trim($r->get('password')), PASSWORD_DEFAULT);
         $role       = $r->get('role');
         $showRoomId = $r->get('car_showroom_id');
 
@@ -79,6 +80,44 @@ class UserController extends AbstractController
         return $this->json(['user' => $user]);
     }
 
+
+    /**
+     * @Route("/user/jwt/auth", name="user_jwt_auth")
+     */
+    public function auth(Request $request) : Response
+    {
+        $r = $request->query;
+        $email    = $r->get('email');
+        $password = $r->get('password');
+        $user     = $this->getUsersFindBy('email', $email);
+
+        if(empty($user[0]['id']))
+            return $this->json(['status' => false, 'token'  => false]);
+
+        $status = $token = false;
+        $user   = $user[0];
+        $userPwdHash = $user['password'];
+
+        $verify = password_verify($password, $userPwdHash);
+        if($verify) {
+            $secretKey = $this->getSecretKey();
+            $payload = [
+                "user_id"  => $user['id'],
+                "role"     => $user['role'],
+                "exp"      => (new \DateTime())->modify("+5 minutes")->getTimestamp(),
+            ];
+            $token = JWT::encode($payload, $secretKey, 'HS256');
+            $status = true;
+        }
+
+        $this->userJwtVerify();
+
+        return $this->json([
+            'status' => $status,
+            'token'  => $token,
+        ]);
+    }
+
     /**
      * @param $userList
      * @return array
@@ -93,6 +132,7 @@ class UserController extends AbstractController
                 'email' => $user->getEmail(),
                 'phone' => $user->getPhone(),
                 'role'  => $user->getRole(),
+                'password'  => $user->getPassword(),
                 'show_room_id'  => $user->getCarShowRoomId(),
             ];
         }
