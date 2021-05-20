@@ -1,6 +1,15 @@
 # symfony5-rest-service
 Тестовый проект на symfony5 (автосалон)
 
+######
+Корневые папки
+######
+Авторизация сделана по Jwt токену
+######
+api    / backend
+front  / frontend
+######
+
 
 REST API Doc
 ######
@@ -27,7 +36,7 @@ GET /order/list/all получить все покупки(заказы)
 ######
 POST /order/create создать новую покупку
 ######
-GET /order/list/by_client получить все покупки клиента
+GET /order/list/by_client/{user_id} получить все покупки клиента
 ######
 GET /order/one/{id}  получить 1 покупку по id
 ######
@@ -47,5 +56,13 @@ POST /user/jwt/auth   JWT авторизация пользователя
 ######
   email, password
 ######
+
+
+###  Автосалоны
+GET /showroom/list/all  получить все автосалоны
+######
+GET /showroom/one/{room_id}  получить 1 автосалон
+######
+
 
 

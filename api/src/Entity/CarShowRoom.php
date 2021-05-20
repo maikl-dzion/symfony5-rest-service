@@ -21,6 +21,7 @@ class CarShowRoom
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $address;
+	private $title;
 
     public function getId(): ?int
     {
@@ -35,6 +36,18 @@ class CarShowRoom
     public function setAddress(?string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+	
+	public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
